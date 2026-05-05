@@ -1,0 +1,135 @@
+Last login: Mon Apr 27 13:51:07 on ttys000
+kolamideidowu@Kolamides-MacBook-Pro ~ % cd '/Users/kolamideidowu/Downloads/HNG Stage 4A'
+kolamideidowu@Kolamides-MacBook-Pro HNG Stage 4A % git inti
+git: 'inti' is not a git command. See 'git --help'.
+
+The most similar command is
+	init
+kolamideidowu@Kolamides-MacBook-Pro HNG Stage 4A % git init
+hint: Using 'master' as the name for the initial branch. This default branch name
+hint: is subject to change. To configure the initial branch name to use in all
+hint: of your new repositories, which will suppress this warning, call:
+hint:
+hint: 	git config --global init.defaultBranch <name>
+hint:
+hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+hint: 'development'. The just-created branch can be renamed via this command:
+hint:
+hint: 	git branch -m <name>
+hint:
+hint: Disable this message with "git config set advice.defaultBranchName false"
+Initialized empty Git repository in /Users/kolamideidowu/Downloads/HNG Stage 4A/.git/
+kolamideidowu@Kolamides-MacBook-Pro HNG Stage 4A % git add.
+git: 'add.' is not a git command. See 'git --help'.
+
+The most similar command is
+	add
+kolamideidowu@Kolamides-MacBook-Pro HNG Stage 4A % git add .
+kolamideidowu@Kolamides-MacBook-Pro HNG Stage 4A % git commit -m "feat: SwiftDeploy Stage 4A — initial implementation"
+[master (root-commit) efd830c] feat: SwiftDeploy Stage 4A — initial implementation
+ Committer: Kolamide Idowu <kolamideidowu@Kolamides-MacBook-Pro.local>
+Your name and email address were configured automatically based
+on your username and hostname. Please check that they are accurate.
+You can suppress this message by setting them explicitly. Run the
+following command and follow the instructions in your editor to edit
+your configuration file:
+
+    git config --global --edit
+
+After doing this, you may fix the identity used for this commit with:
+
+    git commit --amend --reset-author
+
+ 7 files changed, 1077 insertions(+)
+ create mode 100644 Dockerfile
+ create mode 100644 README.md
+ create mode 100644 docker-compose.yml.tmpl
+ create mode 100644 main.py
+ create mode 100644 manifest.yaml
+ create mode 100644 nginx.conf.tmpl
+ create mode 100644 swiftdeploy
+kolamideidowu@Kolamides-MacBook-Pro HNG Stage 4A % git remote add origin https://github.com/Oluwakolamide/swiftdeploy.git
+kolamideidowu@Kolamides-MacBook-Pro HNG Stage 4A % git branch -M main
+kolamideidowu@Kolamides-MacBook-Pro HNG Stage 4A % git push -u origin main
+Enumerating objects: 9, done.
+Counting objects: 100% (9/9), done.
+Delta compression using up to 10 threads
+Compressing objects: 100% (9/9), done.
+Writing objects: 100% (9/9), 11.80 KiB | 11.80 MiB/s, done.
+Total 9 (delta 0), reused 0 (delta 0), pack-reused 0 (from 0)
+To https://github.com/Oluwakolamide/swiftdeploy.git
+ * [new branch]      main -> main
+branch 'main' set up to track 'origin/main'.
+kolamideidowu@Kolamides-MacBook-Pro HNG Stage 4A % docker --version
+Docker version 29.4.0, build 9d7ad9f
+kolamideidowu@Kolamides-MacBook-Pro HNG Stage 4A % docker compose version
+Docker Compose version v5.1.2
+kolamideidowu@Kolamides-MacBook-Pro HNG Stage 4A % python3 --version
+Python 3.14.0
+kolamideidowu@Kolamides-MacBook-Pro HNG Stage 4A % pip install pyyaml
+zsh: command not found: pip
+kolamideidowu@Kolamides-MacBook-Pro HNG Stage 4A % python3 -m pip install pyyaml
+error: externally-managed-environment
+
+× This environment is externally managed
+╰─> To install Python packages system-wide, try brew install
+    xyz, where xyz is the package you are trying to
+    install.
+    
+    If you wish to install a Python library that isn't in Homebrew,
+    use a virtual environment:
+    
+    python3 -m venv path/to/venv
+    source path/to/venv/bin/activate
+    python3 -m pip install xyz
+    
+    If you wish to install a Python application that isn't in Homebrew,
+    it may be easiest to use 'pipx install xyz', which will manage a
+    virtual environment for you. You can install pipx with
+    
+    brew install pipx
+    
+    You may restore the old behavior of pip by passing
+    the '--break-system-packages' flag to pip, or by adding
+    'break-system-packages = true' to your pip.conf file. The latter
+    will permanently disable this error.
+    
+    If you disable this error, we STRONGLY recommend that you additionally
+    pass the '--user' flag to pip, or set 'user = true' in your pip.conf
+    file. Failure to do this can result in a broken Homebrew installation.
+    
+    Read more about this behavior here: <https://peps.python.org/pep-0668/>
+
+note: If you believe this is a mistake, please contact your Python installation or OS distribution provider. You can override this, at the risk of breaking your Python installation or OS, by passing --break-system-packages.
+hint: See PEP 668 for the detailed specification.
+kolamideidowu@Kolamides-MacBook-Pro HNG Stage 4A % python3 -c "import yaml; print('yaml OK')"
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+    import yaml; print('yaml OK')
+    ^^^^^^^^^^^
+ModuleNotFoundError: No module named 'yaml'
+kolamideidowu@Kolamides-MacBook-Pro HNG Stage 4A % # Create a venv inside your project folder
+python3 -m venv .venv
+
+# Activate it
+source .venv/bin/activate
+
+# Now install pyyaml normally
+pip install pyyaml
+
+# Confirm it works
+python3 -c "import yaml; print('yaml OK')"
+zsh: command not found: #
+zsh: command not found: #
+zsh: command not found: #
+Collecting pyyaml
+  Downloading pyyaml-6.0.3-cp314-cp314-macosx_11_0_arm64.whl.metadata (2.4 kB)
+Downloading pyyaml-6.0.3-cp314-cp314-macosx_11_0_arm64.whl (173 kB)
+Installing collected packages: pyyaml
+Successfully installed pyyaml-6.0.3
+
+[notice] A new release of pip is available: 25.2 -> 26.1.1
+[notice] To update, run: pip install --upgrade pip
+zsh: command not found: #
+yaml OK
+(.venv) kolamideidowu@Kolamides-MacBook-Pro HNG Stage 4A % 
