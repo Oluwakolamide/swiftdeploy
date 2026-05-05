@@ -1,22 +1,26 @@
 # SwiftDeploy
 
-> **HNG Internship — DevOps Track — Stage 4A**
+> **HNG Internship — DevOps Track — Stage 4A + 4B**
 >
-> A declarative container deployment CLI that generates all infrastructure configs from a single `manifest.yaml` and manages the full container lifecycle.
+> A declarative container deployment CLI that generates all infrastructure configs from a single `manifest.yaml`, enforces deployment policies via OPA, exposes Prometheus metrics, and provides a live observability dashboard.
 
 ---
 
 ## How it works
 
 ```
-manifest.yaml  ──► swiftdeploy init ──► nginx.conf
-                                    └──► docker-compose.yml
-                                              │
-                             docker compose up▼
-                         ┌────────────┐    ┌──────────────┐
-                         │  nginx     │◄───│  API service │
-                         │  :8080     │    │  :3000       │
-                         └────────────┘    └──────────────┘
+manifest.yaml ──► swiftdeploy init ──► nginx.conf
+                                   └──► docker-compose.yml
+                                               │
+                              docker compose up▼
+          ┌────────────┐    ┌──────────────┐    ┌─────────────┐
+          │   nginx    │◄───│  API service │    │     OPA     │
+          │   :8080    │    │   :3000      │    │  :8181      │
+          └────────────┘    └──────────────┘    └─────────────┘
+               ▲                  │                    ▲
+               │            /metrics                   │
+               │          Prometheus              policy queries
+               └──────── swiftdeploy CLI ──────────────┘
 ```
 
 `manifest.yaml` is the **single source of truth**. The grader deletes generated files and re-runs `swiftdeploy init` to verify they regenerate correctly. Nothing is hand-written.
@@ -37,17 +41,21 @@ manifest.yaml  ──► swiftdeploy init ──► nginx.conf
 
 ```bash
 # 1. Clone the repo
-git clone https://github.com/<your-handle>/swiftdeploy.git
+git clone https://github.com/Oluwakolamide/swiftdeploy.git
 cd swiftdeploy
 
-# 2. Install CLI dependency
+# 2. Create and activate a virtual environment
+python3 -m venv .venv
+source .venv/bin/activate
+
+# 3. Install CLI dependency
 pip install pyyaml
 
-# 3. Build the service image (must match manifest.yaml services.image)
+# 4. Build the service image
 docker build -t swift-deploy-1-node:latest .
 
-# 4. Deploy
-./swiftdeploy deploy
+# 5. Deploy (runs OPA policy check first)
+python3 swiftdeploy deploy
 ```
 
 ---
@@ -56,16 +64,16 @@ docker build -t swift-deploy-1-node:latest .
 
 ```yaml
 services:
-  image: swift-deploy-1-node:latest   # Docker image (must exist locally)
-  port: 3000                          # Container-internal port
-  mode: stable                        # stable | canary
+  image: swift-deploy-1-node:latest
+  port: 3000
+  mode: stable          # stable | canary
   version: "1.0.0"
   restart_policy: unless-stopped
 
 nginx:
   image: nginx:latest
-  port: 8080                          # Host-exposed port
-  proxy_timeout: 30                   # connect / send / read timeout (seconds)
+  port: 8080
+  proxy_timeout: 30
 
 network:
   name: swiftdeploy-net
@@ -81,38 +89,30 @@ You may extend these fields but **must not remove** the base required fields.
 
 ## Subcommand walkthrough
 
-### `./swiftdeploy init`
+### `python3 swiftdeploy init`
 
-Parses `manifest.yaml` and generates two files from templates:
+Parses `manifest.yaml` and generates configs from templates:
 
 - `nginx.conf` — from `templates/nginx.conf.tmpl`
 - `docker-compose.yml` — from `templates/docker-compose.yml.tmpl`
 
-```bash
-./swiftdeploy init
-```
-
 ```
 ▶  swiftdeploy init
-  ✔  Generated  nginx.conf  (nginx port 8080 → service port 3000)
-  ✔  Generated  docker-compose.yml  (mode=stable, version=1.0.0)
+  ✔  Generated  nginx.conf  (nginx:8080 → service:3000)
+  ✔  Generated  docker-compose.yml  (mode=stable)
+  ✔  policies/ directory found (4 files)
 
-  Init complete. Edit manifest.yaml and re-run to regenerate.
+  Init complete.
 ```
 
 ---
 
-### `./swiftdeploy validate`
+### `python3 swiftdeploy validate`
 
 Runs 5 pre-flight checks. Exits non-zero if any fail.
 
-```bash
-./swiftdeploy validate
-```
-
 ```
 ▶  swiftdeploy validate — 5 pre-flight checks
-
   ✔  [PASS]  manifest.yaml exists and is valid YAML
   ✔  [PASS]  All required fields are present and non-empty
   ✔  [PASS]  Docker image referenced in manifest exists locally
@@ -122,84 +122,113 @@ Runs 5 pre-flight checks. Exits non-zero if any fail.
   Result: 5/5 checks passed.
 ```
 
-| Check | What it tests |
-|-------|--------------|
-| 1 | `manifest.yaml` exists and parses as valid YAML |
-| 2 | All 6 required fields present and non-empty |
-| 3 | `docker image inspect <image>` succeeds |
-| 4 | TCP connect to nginx port returns refused (port free) |
-| 5 | `nginx -t` via Docker container succeeds |
-
 ---
 
-### `./swiftdeploy deploy`
+### `python3 swiftdeploy deploy`
 
-Runs `init`, brings up the stack, and blocks until `/healthz` returns `200` or 60 seconds elapse.
-
-```bash
-./swiftdeploy deploy
-```
+Starts OPA first, runs pre-deploy policy check, then brings up the full stack.
 
 ```
 ▶  swiftdeploy deploy
 ▶  swiftdeploy init
-  ✔  Generated  nginx.conf
-  ✔  Generated  docker-compose.yml
+  ✔  Generated nginx.conf
+  ✔  Generated docker-compose.yml
+  ✔  policies/ directory found (4 files)
+
+▶  Starting OPA …
+  ✔  OPA is ready.
+
+▶  OPA pre-deploy policy check
+  disk_free=183.76 GB  cpu_load=1.45
+  ✔  [PASS]  infrastructure: PASS — All infrastructure checks passed
 
 ▶  Bringing up stack …
-[+] Running 3/3
- ✔ Network swiftdeploy-net  Created
- ✔ Container swiftdeploy-service  Started
- ✔ Container swiftdeploy-nginx  Started
+  ✔  Container swiftdeploy-service  Healthy
+  ✔  Container swiftdeploy-nginx    Started
+  ✔  Container swiftdeploy-opa      Started
 
-  Waiting for service at http://localhost:8080/healthz …
-......
-  ✔  Health check passed!  uptime=4.2s
-
+  ✔  Health check passed!  uptime=5.3s
   Stack deployed successfully.
 ```
 
+If policy fails, deploy is blocked:
+
+```
+  ✘  [BLOCK]  infrastructure: BLOCKED — CPU load 5.66 exceeds maximum 2.00
+  ✘  Deploy BLOCKED by policy. Resolve violations and retry.
+```
+
 ---
 
-### `./swiftdeploy promote [canary|stable]`
+### `python3 swiftdeploy promote [canary|stable]`
 
-Switches deployment mode with a rolling service-only restart.
+Switches deployment mode with a rolling service-only restart. Promotion to `stable` triggers an OPA canary safety check first.
 
 ```bash
-./swiftdeploy promote canary
+python3 swiftdeploy promote canary
+python3 swiftdeploy promote stable   # triggers pre-promote OPA check
 ```
 
-What happens:
-1. Updates `mode:` field in `manifest.yaml` in-place
-2. Regenerates `docker-compose.yml` with the new `MODE` env var
-3. Restarts **only** the service container (`--no-deps --force-recreate`)
-4. Hits `/healthz` to confirm `X-Mode: canary` header is present
-
 ```
-▶  swiftdeploy promote → canary
-  ✔  manifest.yaml updated:  mode = stable → canary
-  ✔  docker-compose.yml regenerated with new MODE env var.
+▶  swiftdeploy promote → stable
+▶  OPA pre-promote policy check — measuring canary health (10 s) …
+  error_rate=0.0%  p99=12ms
+  ✔  [PASS]  canary: PASS — Canary health checks passed
 
-▶  Restarting service container …
-
-  Verifying mode switch at http://localhost:8080/healthz …
-...
-  ✔  Mode confirmed: canary  (X-Mode: canary ✔)  uptime=1.7s
-
-  Promotion to 'canary' complete.
+  ✔  manifest.yaml updated: mode = canary → stable
+  ✔  docker-compose.yml regenerated.
+  ✔  Mode confirmed: stable  uptime=2.1s
+  Promotion to 'stable' complete.
 ```
-
-Reverse with `./swiftdeploy promote stable`.
 
 ---
 
-### `./swiftdeploy teardown [--clean]`
+### `python3 swiftdeploy status`
+
+Live-refreshing terminal dashboard. Scrapes `/metrics`, calculates real-time req/s and P99 latency, and queries OPA for policy compliance. Appends every scrape to `history.jsonl`.
+
+```
+             SwiftDeploy Status Dashboard
+──────────────────────────────────────────────────────────────
+  Mode: canary     Chaos: none
+
+  Performance───────────────────────────────────────────────
+  Req/s         1.39 req/s
+  P99 Latency   12 ms
+  Error Rate    0.000 %
+
+  Policy Compliance─────────────────────────────────────────
+  ✔ [PASS] infrastructure: PASS — All infrastructure checks passed
+  ✔ [PASS] canary: PASS — Canary health checks passed
+
+  Updated: 2026-05-05T20:17:59Z   Refresh: 5s
+  History: history.jsonl
+──────────────────────────────────────────────────────────────
+```
+
+Press **Ctrl+C** to stop.
+
+---
+
+### `python3 swiftdeploy audit`
+
+Parses `history.jsonl` and generates `audit_report.md` — a GitHub Flavored Markdown report with timeline, mode changes, chaos events, and policy violations.
+
+```
+▶  swiftdeploy audit
+  ✔  Loaded 42 records from history.jsonl
+  ✔  Report written to audit_report.md
+```
+
+---
+
+### `python3 swiftdeploy teardown [--clean]`
 
 Stops and removes all containers, networks, and volumes.
 
 ```bash
-./swiftdeploy teardown           # remove stack, keep generated configs
-./swiftdeploy teardown --clean   # also delete nginx.conf + docker-compose.yml
+python3 swiftdeploy teardown           # keep generated configs
+python3 swiftdeploy teardown --clean   # also delete nginx.conf + docker-compose.yml
 ```
 
 ---
@@ -209,13 +238,24 @@ Stops and removes all containers, networks, and volumes.
 | Method | Path | Description |
 |--------|------|-------------|
 | `GET` | `/` | Welcome message with mode, version, timestamp |
-| `GET` | `/healthz` | Liveness check: `{"status":"ok","uptime":<seconds>}` |
+| `GET` | `/healthz` | `{"status":"ok","uptime":<seconds>}` |
+| `GET` | `/metrics` | Prometheus text format metrics |
 | `POST` | `/chaos` | Inject failure behaviour (**canary mode only**) |
+
+### Prometheus metrics exposed
+
+| Metric | Type | Description |
+|--------|------|-------------|
+| `http_requests_total` | Counter | Total requests (labels: method, path, status_code) |
+| `http_request_duration_seconds` | Histogram | Request latency with standard buckets |
+| `app_uptime_seconds` | Gauge | Seconds since process start |
+| `app_mode` | Gauge | 0=stable, 1=canary |
+| `chaos_active` | Gauge | 0=none, 1=slow, 2=error |
 
 ### Chaos modes (canary only)
 
 ```bash
-# Simulate slow responses (sleep N seconds)
+# Slow responses
 curl -X POST http://localhost:8080/chaos \
   -H 'Content-Type: application/json' \
   -d '{"mode":"slow","duration":3}'
@@ -225,7 +265,7 @@ curl -X POST http://localhost:8080/chaos \
   -H 'Content-Type: application/json' \
   -d '{"mode":"error","rate":0.5}'
 
-# Recover — cancel all active chaos
+# Recover
 curl -X POST http://localhost:8080/chaos \
   -H 'Content-Type: application/json' \
   -d '{"mode":"recover"}'
@@ -233,14 +273,47 @@ curl -X POST http://localhost:8080/chaos \
 
 ---
 
+## OPA Policy Architecture
+
+OPA runs as a sidecar container, reachable by the CLI at `127.0.0.1:8181` but **never accessible through nginx**. All decision logic lives exclusively in OPA — the CLI never makes allow/deny decisions itself.
+
+### Infrastructure policy (pre-deploy)
+
+Defined in `policies/infrastructure.rego`. Blocks deployment if:
+- Disk free < 10 GB
+- CPU load > threshold
+
+### Canary safety policy (pre-promote)
+
+Defined in `policies/canary.rego`. Blocks promotion to stable if:
+- Error rate > 1%
+- P99 latency > 500ms
+
+### Threshold configuration
+
+All threshold values live in `policies/data.json` — never hardcoded in Rego files:
+
+```json
+{
+  "thresholds": {
+    "min_disk_free_gb":   10.0,
+    "max_cpu_load":        2.0,
+    "max_error_rate_pct":  1.0,
+    "max_p99_latency_ms": 500.0
+  }
+}
+```
+
+---
+
 ## Nginx features
 
 - Listens on `nginx.port` (default 8080)
-- Timeouts from `nginx.proxy_timeout`
+- Timeouts driven by `nginx.proxy_timeout`
 - JSON error bodies on 502/503/504
 - `X-Deployed-By: swiftdeploy` header on every response
-- Forwards `X-Mode` header from upstream to client
-- Access log format: `$time_iso8601 | $status | ${request_time}s | $upstream_addr | $request`
+- Forwards `X-Mode` header from upstream (canary signal)
+- Access log: `$time_iso8601 | $status | ${request_time}s | $upstream_addr | $request`
 
 ---
 
@@ -250,8 +323,8 @@ curl -X POST http://localhost:8080/chaos \
 - All Linux capabilities dropped (`cap_drop: ALL`)
 - `no-new-privileges:true` security option
 - Service port **never** exposed to host — all traffic routes through Nginx
+- OPA port bound to `127.0.0.1` only — not reachable externally
 - Multi-stage Docker build keeps image under 300 MB
-- `PYTHONUNBUFFERED` and `PYTHONDONTWRITEBYTECODE` set
 
 ---
 
@@ -259,33 +332,31 @@ curl -X POST http://localhost:8080/chaos \
 
 ```
 .
-├── manifest.yaml              # ← single source of truth (edit this)
-├── swiftdeploy                # ← CLI executable
-├── Dockerfile                 # ← builds swift-deploy-1-node:latest
-├── .dockerignore
+├── manifest.yaml                   # ← single source of truth (only file you edit)
+├── swiftdeploy                     # ← CLI executable
+├── Dockerfile                      # ← builds swift-deploy-1-node:latest
 ├── app/
-│   ├── main.py                # Python API service (Flask + Gunicorn)
+│   ├── main.py                     # Flask + Gunicorn + Prometheus metrics
 │   └── requirements.txt
 ├── templates/
-│   ├── nginx.conf.tmpl        # Nginx config template
-│   └── docker-compose.yml.tmpl
-└── README.md
+│   ├── nginx.conf.tmpl             # Nginx config template
+│   └── docker-compose.yml.tmpl    # Compose template (includes OPA)
+└── policies/
+    ├── infrastructure.rego         # pre-deploy policy domain
+    ├── canary.rego                 # pre-promote policy domain
+    └── data.json                   # threshold values (not in Rego)
 ```
 
-Generated (by `swiftdeploy init`, gitignored):
+Generated by `swiftdeploy init` (gitignored):
 
 ```
 ├── nginx.conf
 └── docker-compose.yml
 ```
 
----
-
-## .gitignore recommendation
+Generated at runtime (gitignored):
 
 ```
-nginx.conf
-docker-compose.yml
-__pycache__/
-*.pyc
+├── history.jsonl
+└── audit_report.md
 ```
