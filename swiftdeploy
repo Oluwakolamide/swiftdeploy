@@ -30,7 +30,7 @@ except ImportError:
     print("[ERROR] PyYAML not installed. Run: pip install pyyaml")
     sys.exit(1)
 
-# ── Constants ──────────────────────────────────────────────────────────────
+# Constants
 MANIFEST_PATH    = "manifest.yaml"
 NGINX_CONF       = "nginx.conf"
 COMPOSE_FILE     = "docker-compose.yml"
@@ -50,7 +50,7 @@ DIM    = "\033[2m"
 RESET  = "\033[0m"
 
 
-# ── Output helpers ─────────────────────────────────────────────────────────
+# Output helpers
 def banner(text):
     print(f"\n{BOLD}{CYAN}▶  {text}{RESET}")
 
@@ -68,7 +68,7 @@ def die(msg, code=1):
     sys.exit(code)
 
 
-# ── Shell helper ───────────────────────────────────────────────────────────
+# Shell helper
 def run(cmd, capture=False, check=True, silent=False):
     kwargs = dict(shell=True, text=True)
     if capture or silent:
@@ -79,7 +79,7 @@ def run(cmd, capture=False, check=True, silent=False):
     return result
 
 
-# ── Manifest helpers ───────────────────────────────────────────────────────
+# Manifest helpers
 def load_manifest():
     with open(MANIFEST_PATH) as f:
         data = yaml.safe_load(f)
@@ -120,7 +120,7 @@ def render_template(path, ctx):
     return re.sub(r"\{\{\s*([\w]+)\s*\}\}", replace, content)
 
 
-# ── OPA helpers ───────────────────────────────────────────────────────────
+# OPA helpers
 def _opa_post(path, input_data, timeout=5):
     """
     POST to OPA REST API. Returns parsed JSON response.
@@ -183,7 +183,7 @@ def print_opa_results(results):
         print(f"  {icon}  [{color}{label}{RESET}]  {r['domain']}: {r['reason']}")
 
 
-# ── Host stats helpers ─────────────────────────────────────────────────────
+# Host stats helpers
 def get_disk_free_gb():
     usage = shutil.disk_usage("/")
     return round(usage.free / (1024 ** 3), 2)
@@ -197,7 +197,7 @@ def get_cpu_load():
         return 0.0
 
 
-# ── Prometheus text format parser ──────────────────────────────────────────
+# Prometheus text format parser
 def parse_prometheus(text):
     """Parse Prometheus text exposition format into a dict of metric → [sample]."""
     metrics = {}
@@ -285,7 +285,7 @@ def scrape_metrics(port):
         return parse_prometheus(resp.read().decode())
 
 
-# ── Pre-flight OPA gate ────────────────────────────────────────────────────
+# Pre-flight OPA gate
 def opa_pre_deploy_gate():
     """Query OPA infrastructure domain. Returns (all_pass, results_list)."""
     banner("OPA pre-deploy policy check")
@@ -339,8 +339,7 @@ def opa_pre_promote_gate(port):
     return all(r["allow"] for r in results), results
 
 
-# ── Subcommands ────────────────────────────────────────────────────────────
-
+# Subcommands
 def cmd_init():
     banner("swiftdeploy init")
     manifest = load_manifest()
@@ -460,7 +459,7 @@ def cmd_deploy():
     banner("swiftdeploy deploy")
     cmd_init()
 
-    # ── 1. Start OPA first so we can run pre-deploy checks ─────────────────
+    # Start OPA first so we can run pre-deploy checks
     banner("Starting OPA …")
     run("docker compose up -d opa")
 
@@ -481,13 +480,13 @@ def cmd_deploy():
         warn("OPA did not become ready in 30 s — proceeding without policy gate.")
     else:
         ok("OPA is ready.")
-        # ── 2. Pre-deploy OPA gate ──────────────────────────────────────────
+        # Pre-deploy OPA gate
         all_pass, results = opa_pre_deploy_gate()
         if not all_pass:
             print()
             die("Deploy BLOCKED by policy. Resolve violations and retry.")
 
-    # ── 3. Bring up the full stack ─────────────────────────────────────────
+    # Bring up the full stack
     banner("Bringing up stack …")
     run("docker compose up -d")
 
@@ -529,14 +528,14 @@ def cmd_promote(mode):
         warn(f"Already in '{mode}' mode — nothing to do.")
         return
 
-    # ── Pre-promote OPA gate (only when promoting to stable) ───────────────
+    # Pre-promote OPA gate (only when promoting to stable)
     if mode == "stable":
         all_pass, _ = opa_pre_promote_gate(port)
         if not all_pass:
             print()
             die("Promotion BLOCKED by canary safety policy.")
 
-    # ── Update manifest in-place ───────────────────────────────────────────
+    # Update manifest in-place
     with open(MANIFEST_PATH) as f:
         content = f.read()
 
@@ -607,7 +606,7 @@ def cmd_status():
             now = time.time()
             ts  = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(now))
 
-            # ── Scrape metrics ─────────────────────────────────────────────
+            # Scrape metrics
             try:
                 metrics = scrape_metrics(port)
                 scrape_ok = True
@@ -615,7 +614,7 @@ def cmd_status():
                 metrics, scrape_ok = {}, False
                 scrape_err = str(e)
 
-            # ── Calculate rates ────────────────────────────────────────────
+            # Calculate rates
             req_s      = None
             error_rate = 0.0
             p99        = 0.0
@@ -630,7 +629,7 @@ def cmd_status():
                 error_rate = calc_error_rate_pct(metrics)
                 p99        = calc_p99_ms(metrics)
 
-            # ── Read mode / chaos from gauges ──────────────────────────────
+            # Read mode / chaos from gauges
             mode_val  = _get_gauge(metrics, "app_mode")
             chaos_val = _get_gauge(metrics, "chaos_active")
             mode      = "canary" if mode_val == 1 else "stable"
@@ -638,7 +637,7 @@ def cmd_status():
                 int(chaos_val or 0), "none"
             )
 
-            # ── Query OPA for compliance ───────────────────────────────────
+            # Query OPA for compliance
             opa_infra  = query_opa_domain("infrastructure", {
                 "check_type":   "status",
                 "disk_free_gb": get_disk_free_gb(),
@@ -651,7 +650,7 @@ def cmd_status():
             })
             opa_results = [opa_infra, opa_canary]
 
-            # ── Print dashboard ────────────────────────────────────────────
+            # Print dashboard
             W = 62
             print(f"\n{BOLD}{'SwiftDeploy Status Dashboard':^{W}}{RESET}")
             print("─" * W)
@@ -681,7 +680,7 @@ def cmd_status():
             print(f"  {DIM}History: {HISTORY_FILE}{RESET}")
             print("─" * W)
 
-            # ── Append to history.jsonl ────────────────────────────────────
+            # Append to history.jsonl
             record = {
                 "timestamp":      ts,
                 "req_s":          req_s,
@@ -729,7 +728,7 @@ def cmd_audit():
 
     ok(f"Loaded {len(records)} records from {HISTORY_FILE}")
 
-    # ── Build sections ─────────────────────────────────────────────────────
+    # Build sections
     first_ts = records[0]["timestamp"]
     last_ts  = records[-1]["timestamp"]
 
@@ -772,7 +771,7 @@ def cmd_audit():
                     f"| {r['timestamp']} | {domain} | {result.get('reason','?')} |"
                 )
 
-    # ── Write markdown ─────────────────────────────────────────────────────
+    # Write markdown
     report_path = "audit_report.md"
     lines = [
         "# SwiftDeploy Audit Report",
@@ -861,7 +860,7 @@ def cmd_teardown(clean=False):
         print(f"\n  {BOLD}Teardown complete.{RESET}  (--clean also deletes generated configs)\n")
 
 
-# ── Entry point ────────────────────────────────────────────────────────────
+# Entry point
 USAGE = f"""
 {BOLD}swiftdeploy{RESET} — declarative container deployment tool (Stage 4B)
 
