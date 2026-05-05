@@ -1,0 +1,152 @@
+
+                 SwiftDeploy Status Dashboard                 
+──────────────────────────────────────────────────────────────
+  Mode: canary     Chaos: none
+
+  Performance───────────────────────────────────────────────
+  Req/s         1.39 req/s
+  P99 Latency   inf ms
+  Error Rate    0.000 %
+
+  Policy Compliance─────────────────────────────────────────
+  ✔ [PASS] infrastructure: PASS — All infrastructure checks passed
+  ✘ [ERR] canary: OPA network error: HTTP Error 400: Bad Request
+
+  Updated: 2026-05-05T19:48:49Z   Refresh: 5s
+  History: history.jsonl
+──────────────────────────────────────────────────────────────
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                 SwiftDeploy Status Dashboard                 
+──────────────────────────────────────────────────────────────
+  Mode: canary     Chaos: none
+
+  Performance───────────────────────────────────────────────
+  Req/s         -0.99 req/s
+  P99 Latency   inf ms
+  Error Rate    0.000 %
+
+  Policy Compliance─────────────────────────────────────────
+  ✔ [PASS] infrastructure: PASS — All infrastructure checks passed
+  ✘ [ERR] canary: OPA network error: HTTP Error 400: Bad Request
+
+  Updated: 2026-05-05T19:48:54Z   Refresh: 5s
+  History: history.jsonl
+──────────────────────────────────────────────────────────────
+^C
+
+  Status dashboard stopped. History saved to history.jsonl
+
+(.venv) kolamideidowu@Kolamides-MacBook-Pro HNG Stage 4A % python3 -c "
+import json
+d = json.load(open('policies/data.json'))
+d['thresholds']['max_cpu_load'] = 2.0
+json.dump(d, open('policies/data.json','w'), indent=2)
+print('Restored to 2.0')
+"
+Restored to 2.0
+(.venv) kolamideidowu@Kolamides-MacBook-Pro HNG Stage 4A % docker restart swiftdeploy-opa && sleep 5
+python3 swiftdeploy deploy
+swiftdeploy-opa
+
+▶  swiftdeploy deploy
+
+▶  swiftdeploy init
+  ✔  Generated  nginx.conf  (nginx:8080 → service:3000)
+  ✔  Generated  docker-compose.yml  (mode=canary)
+  ✔  policies/ directory found (4 files)
+
+  Init complete.
+
+
+▶  Starting OPA …
+[+] up 1/1
+ ✔ Container swiftdeploy-opa Running                                                                                                                                                                             0.0s
+  Waiting for OPA to be ready …
+  ✔  OPA is ready.
+
+▶  OPA pre-deploy policy check
+  disk_free=182.75 GB  cpu_load=2.21
+  ✘  [BLOCK]  infrastructure: BLOCKED — CPU load 2.21 exceeds maximum 2.00
+
+  ✘  Deploy BLOCKED by policy. Resolve violations and retry.
+(.venv) kolamideidowu@Kolamides-MacBook-Pro HNG Stage 4A % docker restart swiftdeploy-opa && sleep 5
+python3 swiftdeploy deploy
+swiftdeploy-opa
+
+▶  swiftdeploy deploy
+
+▶  swiftdeploy init
+  ✔  Generated  nginx.conf  (nginx:8080 → service:3000)
+  ✔  Generated  docker-compose.yml  (mode=canary)
+  ✔  policies/ directory found (4 files)
+
+  Init complete.
+
+
+▶  Starting OPA …
+[+] up 1/1
+ ✔ Container swiftdeploy-opa Running                                                                                                                                                                             0.0s
+  Waiting for OPA to be ready …
+  ✔  OPA is ready.
+
+▶  OPA pre-deploy policy check
+  disk_free=182.68 GB  cpu_load=2.73
+  ✘  [BLOCK]  infrastructure: BLOCKED — CPU load 2.73 exceeds maximum 2.00
+
+  ✘  Deploy BLOCKED by policy. Resolve violations and retry.
+(.venv) kolamideidowu@Kolamides-MacBook-Pro HNG Stage 4A % python3 -c "
+import json
+d = json.load(open('policies/data.json'))
+d['thresholds']['max_cpu_load'] = 2.0
+json.dump(d, open('policies/data.json','w'), indent=2)
+print('Restored to 2.0')
+"
+Restored to 2.0
+(.venv) kolamideidowu@Kolamides-MacBook-Pro HNG Stage 4A % 

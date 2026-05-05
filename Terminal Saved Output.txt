@@ -1,0 +1,1035 @@
+Last login: Mon Apr 27 13:51:07 on ttys000
+kolamideidowu@Kolamides-MacBook-Pro ~ % cd '/Users/kolamideidowu/Downloads/HNG Stage 4A'
+kolamideidowu@Kolamides-MacBook-Pro HNG Stage 4A % git inti
+git: 'inti' is not a git command. See 'git --help'.
+
+The most similar command is
+	init
+kolamideidowu@Kolamides-MacBook-Pro HNG Stage 4A % git init
+hint: Using 'master' as the name for the initial branch. This default branch name
+hint: is subject to change. To configure the initial branch name to use in all
+hint: of your new repositories, which will suppress this warning, call:
+hint:
+hint: 	git config --global init.defaultBranch <name>
+hint:
+hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+hint: 'development'. The just-created branch can be renamed via this command:
+hint:
+hint: 	git branch -m <name>
+hint:
+hint: Disable this message with "git config set advice.defaultBranchName false"
+Initialized empty Git repository in /Users/kolamideidowu/Downloads/HNG Stage 4A/.git/
+kolamideidowu@Kolamides-MacBook-Pro HNG Stage 4A % git add.
+git: 'add.' is not a git command. See 'git --help'.
+
+The most similar command is
+	add
+kolamideidowu@Kolamides-MacBook-Pro HNG Stage 4A % git add .
+kolamideidowu@Kolamides-MacBook-Pro HNG Stage 4A % git commit -m "feat: SwiftDeploy Stage 4A — initial implementation"
+[master (root-commit) efd830c] feat: SwiftDeploy Stage 4A — initial implementation
+ Committer: Kolamide Idowu <kolamideidowu@Kolamides-MacBook-Pro.local>
+Your name and email address were configured automatically based
+on your username and hostname. Please check that they are accurate.
+You can suppress this message by setting them explicitly. Run the
+following command and follow the instructions in your editor to edit
+your configuration file:
+
+    git config --global --edit
+
+After doing this, you may fix the identity used for this commit with:
+
+    git commit --amend --reset-author
+
+ 7 files changed, 1077 insertions(+)
+ create mode 100644 Dockerfile
+ create mode 100644 README.md
+ create mode 100644 docker-compose.yml.tmpl
+ create mode 100644 main.py
+ create mode 100644 manifest.yaml
+ create mode 100644 nginx.conf.tmpl
+ create mode 100644 swiftdeploy
+kolamideidowu@Kolamides-MacBook-Pro HNG Stage 4A % git remote add origin https://github.com/Oluwakolamide/swiftdeploy.git
+kolamideidowu@Kolamides-MacBook-Pro HNG Stage 4A % git branch -M main
+kolamideidowu@Kolamides-MacBook-Pro HNG Stage 4A % git push -u origin main
+Enumerating objects: 9, done.
+Counting objects: 100% (9/9), done.
+Delta compression using up to 10 threads
+Compressing objects: 100% (9/9), done.
+Writing objects: 100% (9/9), 11.80 KiB | 11.80 MiB/s, done.
+Total 9 (delta 0), reused 0 (delta 0), pack-reused 0 (from 0)
+To https://github.com/Oluwakolamide/swiftdeploy.git
+ * [new branch]      main -> main
+branch 'main' set up to track 'origin/main'.
+kolamideidowu@Kolamides-MacBook-Pro HNG Stage 4A % docker --version
+Docker version 29.4.0, build 9d7ad9f
+kolamideidowu@Kolamides-MacBook-Pro HNG Stage 4A % docker compose version
+Docker Compose version v5.1.2
+kolamideidowu@Kolamides-MacBook-Pro HNG Stage 4A % python3 --version
+Python 3.14.0
+kolamideidowu@Kolamides-MacBook-Pro HNG Stage 4A % pip install pyyaml
+zsh: command not found: pip
+kolamideidowu@Kolamides-MacBook-Pro HNG Stage 4A % python3 -m pip install pyyaml
+error: externally-managed-environment
+
+× This environment is externally managed
+╰─> To install Python packages system-wide, try brew install
+    xyz, where xyz is the package you are trying to
+    install.
+    
+    If you wish to install a Python library that isn't in Homebrew,
+    use a virtual environment:
+    
+    python3 -m venv path/to/venv
+    source path/to/venv/bin/activate
+    python3 -m pip install xyz
+    
+    If you wish to install a Python application that isn't in Homebrew,
+    it may be easiest to use 'pipx install xyz', which will manage a
+    virtual environment for you. You can install pipx with
+    
+    brew install pipx
+    
+    You may restore the old behavior of pip by passing
+    the '--break-system-packages' flag to pip, or by adding
+    'break-system-packages = true' to your pip.conf file. The latter
+    will permanently disable this error.
+    
+    If you disable this error, we STRONGLY recommend that you additionally
+    pass the '--user' flag to pip, or set 'user = true' in your pip.conf
+    file. Failure to do this can result in a broken Homebrew installation.
+    
+    Read more about this behavior here: <https://peps.python.org/pep-0668/>
+
+note: If you believe this is a mistake, please contact your Python installation or OS distribution provider. You can override this, at the risk of breaking your Python installation or OS, by passing --break-system-packages.
+hint: See PEP 668 for the detailed specification.
+kolamideidowu@Kolamides-MacBook-Pro HNG Stage 4A % python3 -c "import yaml; print('yaml OK')"
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+    import yaml; print('yaml OK')
+    ^^^^^^^^^^^
+ModuleNotFoundError: No module named 'yaml'
+kolamideidowu@Kolamides-MacBook-Pro HNG Stage 4A % # Create a venv inside your project folder
+python3 -m venv .venv
+
+# Activate it
+source .venv/bin/activate
+
+# Now install pyyaml normally
+pip install pyyaml
+
+# Confirm it works
+python3 -c "import yaml; print('yaml OK')"
+zsh: command not found: #
+zsh: command not found: #
+zsh: command not found: #
+Collecting pyyaml
+  Downloading pyyaml-6.0.3-cp314-cp314-macosx_11_0_arm64.whl.metadata (2.4 kB)
+Downloading pyyaml-6.0.3-cp314-cp314-macosx_11_0_arm64.whl (173 kB)
+Installing collected packages: pyyaml
+Successfully installed pyyaml-6.0.3
+
+[notice] A new release of pip is available: 25.2 -> 26.1.1
+[notice] To update, run: pip install --upgrade pip
+zsh: command not found: #
+yaml OK
+(.venv) kolamideidowu@Kolamides-MacBook-Pro HNG Stage 4A % mkdir -p app templates
+(.venv) kolamideidowu@Kolamides-MacBook-Pro HNG Stage 4A % mv main.py app/
+mv nginx.conf.tmpl templates/
+mv docker-compose.yml.tmpl templates/
+(.venv) kolamideidowu@Kolamides-MacBook-Pro HNG Stage 4A % echo "flask>=3.0.0
+gunicorn>=21.2.0" > app/requirements.txt
+(.venv) kolamideidowu@Kolamides-MacBook-Pro HNG Stage 4A % git add .
+git commit -m "fix: correct folder structure — app/ and templates/"
+git push
+[main ae865aa] fix: correct folder structure — app/ and templates/
+ Committer: Kolamide Idowu <kolamideidowu@Kolamides-MacBook-Pro.local>
+Your name and email address were configured automatically based
+on your username and hostname. Please check that they are accurate.
+You can suppress this message by setting them explicitly. Run the
+following command and follow the instructions in your editor to edit
+your configuration file:
+
+    git config --global --edit
+
+After doing this, you may fix the identity used for this commit with:
+
+    git commit --amend --reset-author
+
+ 5 files changed, 137 insertions(+)
+ create mode 100644 Terminal Saved Output.txt
+ rename main.py => app/main.py (100%)
+ create mode 100644 app/requirements.txt
+ rename docker-compose.yml.tmpl => templates/docker-compose.yml.tmpl (100%)
+ rename nginx.conf.tmpl => templates/nginx.conf.tmpl (100%)
+Enumerating objects: 7, done.
+Counting objects: 100% (7/7), done.
+Delta compression using up to 10 threads
+Compressing objects: 100% (5/5), done.
+Writing objects: 100% (6/6), 2.87 KiB | 2.87 MiB/s, done.
+Total 6 (delta 0), reused 0 (delta 0), pack-reused 0 (from 0)
+To https://github.com/Oluwakolamide/swiftdeploy.git
+   efd830c..ae865aa  main -> main
+(.venv) kolamideidowu@Kolamides-MacBook-Pro HNG Stage 4A % ls -R
+.:
+ app   Dockerfile   manifest.yaml   README.md   swiftdeploy   templates  'Terminal Saved Output.txt'
+
+./app:
+main.py  requirements.txt
+
+./templates:
+docker-compose.yml.tmpl  nginx.conf.tmpl
+(.venv) kolamideidowu@Kolamides-MacBook-Pro HNG Stage 4A % docker build -t swift-deploy-1-node:latest .
+ERROR: failed to connect to the docker API at unix:///Users/kolamideidowu/.docker/run/docker.sock; check if the path is correct and if the daemon is running: dial unix /Users/kolamideidowu/.docker/run/docker.sock: connect: no such file or directory
+(.venv) kolamideidowu@Kolamides-MacBook-Pro HNG Stage 4A % docker build -t swift-deploy-1-node:latest .
+[+] Building 15.3s (16/16) FINISHED                                                                                                                                                             docker:desktop-linux
+ => [internal] load build definition from Dockerfile                                                                                                                                                            0.0s
+ => => transferring dockerfile: 1.70kB                                                                                                                                                                          0.0s
+ => [internal] load metadata for docker.io/library/python:3.12-alpine                                                                                                                                           4.9s
+ => [auth] library/python:pull token for registry-1.docker.io                                                                                                                                                   0.0s
+ => [internal] load .dockerignore                                                                                                                                                                               0.1s
+ => => transferring context: 2B                                                                                                                                                                                 0.0s
+ => [internal] load build context                                                                                                                                                                               0.0s
+ => => transferring context: 4.50kB                                                                                                                                                                             0.0s
+ => [builder 1/5] FROM docker.io/library/python:3.12-alpine@sha256:236173eb74001afe2f60862de935b74fcbd00adfca247b2c27051a70a6a39a2d                                                                             1.4s
+ => => resolve docker.io/library/python:3.12-alpine@sha256:236173eb74001afe2f60862de935b74fcbd00adfca247b2c27051a70a6a39a2d                                                                                     0.0s
+ => => sha256:05b6ee55fad38c6a3dc2ee84c7a44ff2b3429fc3eef0d4c2a2cfeb230b0acd73 250B / 250B                                                                                                                      0.3s
+ => => sha256:74bec20749987ddac4cc74bd2f826b97908f1c8a71661be8e89e6e8468e634d9 13.89MB / 13.89MB                                                                                                                1.2s
+ => => sha256:3124cc6c064bced8b2c441577d9c793d290258b2eb87477d21572e5a938fb3cb 457.92kB / 457.92kB                                                                                                              0.8s
+ => => sha256:d17f077ada118cc762df373ff803592abf2dfa3ddafaa7381e364dd27a88fca7 4.20MB / 4.20MB                                                                                                                  0.8s
+ => => extracting sha256:d17f077ada118cc762df373ff803592abf2dfa3ddafaa7381e364dd27a88fca7                                                                                                                       0.1s
+ => => extracting sha256:3124cc6c064bced8b2c441577d9c793d290258b2eb87477d21572e5a938fb3cb                                                                                                                       0.0s
+ => => extracting sha256:74bec20749987ddac4cc74bd2f826b97908f1c8a71661be8e89e6e8468e634d9                                                                                                                       0.1s
+ => => extracting sha256:05b6ee55fad38c6a3dc2ee84c7a44ff2b3429fc3eef0d4c2a2cfeb230b0acd73                                                                                                                       0.0s
+ => [runtime 2/6] RUN addgroup -g 1001 -S appgroup  && adduser  -u 1001 -S appuser  -G appgroup                                                                                                                 0.2s
+ => [builder 2/5] WORKDIR /build                                                                                                                                                                                0.1s
+ => [builder 3/5] RUN apk add --no-cache gcc musl-dev libffi-dev                                                                                                                                                3.9s
+ => [builder 4/5] COPY app/requirements.txt .                                                                                                                                                                   0.0s 
+ => [builder 5/5] RUN pip install --no-cache-dir --prefix=/install -r requirements.txt                                                                                                                          4.5s 
+ => [runtime 3/6] COPY --from=builder /install /usr/local                                                                                                                                                       0.0s 
+ => [runtime 4/6] WORKDIR /app                                                                                                                                                                                  0.0s 
+ => [runtime 5/6] COPY app/ .                                                                                                                                                                                   0.0s 
+ => [runtime 6/6] RUN mkdir -p /logs && chown appuser:appgroup /logs                                                                                                                                            0.1s 
+ => exporting to image                                                                                                                                                                                          0.2s 
+ => => exporting layers                                                                                                                                                                                         0.2s 
+ => => exporting manifest sha256:f9aaf1bb8be580c412f5d0f539f45dbef0ab8e3979fdfe3d55f6353802a5366f                                                                                                               0.0s
+ => => exporting config sha256:78164e42857ff896a58df5535f3fbae22286e4d08ab18bb0823a05ba6e5559f8                                                                                                                 0.0s
+ => => exporting attestation manifest sha256:e64b3d8b8650a1e50044c96786cb51615fdc973ec7cd57683cba36d6553d8b55                                                                                                   0.0s
+ => => exporting manifest list sha256:dc81f17cd69902a75f3651b456c95f5dd9cf61dac67e47e78eaaf8ff1dc814c4                                                                                                          0.0s
+ => => naming to docker.io/library/swift-deploy-1-node:latest                                                                                                                                                   0.0s
+ => => unpacking to docker.io/library/swift-deploy-1-node:latest                                                                                                                                                0.0s
+
+ 1 warning found (use docker --debug to expand):
+ - JSONArgsRecommended: JSON arguments recommended for CMD to prevent unintended behavior related to OS signals (line 46)
+(.venv) kolamideidowu@Kolamides-MacBook-Pro HNG Stage 4A % rm 'Terminal Saved Output.txt'
+git add .
+git commit -m "chore: remove accidental file"
+git push
+[main c6d1689] chore: remove accidental file
+ Committer: Kolamide Idowu <kolamideidowu@Kolamides-MacBook-Pro.local>
+Your name and email address were configured automatically based
+on your username and hostname. Please check that they are accurate.
+You can suppress this message by setting them explicitly. Run the
+following command and follow the instructions in your editor to edit
+your configuration file:
+
+    git config --global --edit
+
+After doing this, you may fix the identity used for this commit with:
+
+    git commit --amend --reset-author
+
+ 1 file changed, 135 deletions(-)
+ delete mode 100644 Terminal Saved Output.txt
+Enumerating objects: 3, done.
+Counting objects: 100% (3/3), done.
+Delta compression using up to 10 threads
+Compressing objects: 100% (2/2), done.
+Writing objects: 100% (2/2), 254 bytes | 254.00 KiB/s, done.
+Total 2 (delta 1), reused 0 (delta 0), pack-reused 0 (from 0)
+remote: Resolving deltas: 100% (1/1), completed with 1 local object.
+To https://github.com/Oluwakolamide/swiftdeploy.git
+   ae865aa..c6d1689  main -> main
+(.venv) kolamideidowu@Kolamides-MacBook-Pro HNG Stage 4A % python3 swiftdeploy validate
+
+▶  swiftdeploy validate — 5 pre-flight checks
+  ✔  [PASS]  manifest.yaml exists and is valid YAML
+         Parsed OK (4 top-level keys).
+  ✔  [PASS]  All required fields are present and non-empty
+         services.image = swift-deploy-1-node:latest
+         services.port = 3000
+         nginx.image = nginx:latest
+         nginx.port = 8080
+         network.name = swiftdeploy-net
+         network.driver_type = bridge
+  ✔  [PASS]  Docker image referenced in manifest exists locally
+         Image 'swift-deploy-1-node:latest' present locally.
+  ✔  [PASS]  Nginx port is not already bound on the host
+         Port 8080 is free.
+  ✘  [FAIL]  Generated nginx.conf is syntactically valid
+         'nginx.conf' not found — run 'swiftdeploy init' first.
+
+  Result: 4/5 checks passed.
+
+(.venv) kolamideidowu@Kolamides-MacBook-Pro HNG Stage 4A % python3 swiftdeploy init
+
+▶  swiftdeploy init
+  ✔  Generated  nginx.conf  (nginx port 8080 → service port 3000)
+  ✔  Generated  docker-compose.yml  (mode=stable, version=1.0.0)
+
+  Init complete. Edit manifest.yaml and re-run to regenerate.
+
+(.venv) kolamideidowu@Kolamides-MacBook-Pro HNG Stage 4A % python3 swiftdeploy validate
+
+▶  swiftdeploy validate — 5 pre-flight checks
+  ✔  [PASS]  manifest.yaml exists and is valid YAML
+         Parsed OK (4 top-level keys).
+  ✔  [PASS]  All required fields are present and non-empty
+         services.image = swift-deploy-1-node:latest
+         services.port = 3000
+         nginx.image = nginx:latest
+         nginx.port = 8080
+         network.name = swiftdeploy-net
+         network.driver_type = bridge
+  ✔  [PASS]  Docker image referenced in manifest exists locally
+         Image 'swift-deploy-1-node:latest' present locally.
+  ✔  [PASS]  Nginx port is not already bound on the host
+         Port 8080 is free.
+  ✘  [FAIL]  Generated nginx.conf is syntactically valid
+         nginx -t output:
+         docker: invalid reference format: repository name (library/Stage) must be lowercase
+         
+         Run 'docker run --help' for more information
+
+  Result: 4/5 checks passed.
+
+(.venv) kolamideidowu@Kolamides-MacBook-Pro HNG Stage 4A % python3 << 'EOF'
+content = open('swiftdeploy').read()
+old = 'f"-v {abs_conf}:/etc/nginx/conf.d/default.conf:ro "'
+new = 'f\'"-v {abs_conf}:/etc/nginx/conf.d/default.conf:ro" \''
+content = content.replace(old, new)
+open('swiftdeploy', 'w').write(content)
+print("Patched!")
+EOF
+Patched!
+(.venv) kolamideidowu@Kolamides-MacBook-Pro HNG Stage 4A % python3 swiftdeploy validate
+
+▶  swiftdeploy validate — 5 pre-flight checks
+  ✔  [PASS]  manifest.yaml exists and is valid YAML
+         Parsed OK (4 top-level keys).
+  ✔  [PASS]  All required fields are present and non-empty
+         services.image = swift-deploy-1-node:latest
+         services.port = 3000
+         nginx.image = nginx:latest
+         nginx.port = 8080
+         network.name = swiftdeploy-net
+         network.driver_type = bridge
+  ✔  [PASS]  Docker image referenced in manifest exists locally
+         Image 'swift-deploy-1-node:latest' present locally.
+  ✔  [PASS]  Nginx port is not already bound on the host
+         Port 8080 is free.
+  ✘  [FAIL]  Generated nginx.conf is syntactically valid
+         nginx -t output:
+         Unable to find image 'nginx:latest' locally
+         latest: Pulling from library/nginx
+         91409cde2cec: Pulling fs layer
+         b420423b8e46: Pulling fs layer
+         0c0e4c019008: Pulling fs layer
+         405d5794f35e: Pulling fs layer
+         7ebd5beed79e: Pulling fs layer
+         1b39715bb702: Pulling fs layer
+         b420423b8e46: Download complete
+         405d5794f35e: Download complete
+         1b39715bb702: Download complete
+         d12313879df9: Download complete
+         f4bd72ceaa9b: Download complete
+         91409cde2cec: Download complete
+         0c0e4c019008: Download complete
+         7ebd5beed79e: Download complete
+         b420423b8e46: Pull complete
+         405d5794f35e: Pull complete
+         1b39715bb702: Pull complete
+         91409cde2cec: Pull complete
+         0c0e4c019008: Pull complete
+         7ebd5beed79e: Pull complete
+         Digest: sha256:6e23479198b998e5e25921dff8455837c7636a67111a04a635cf1bb363d199dc
+         Status: Downloaded newer image for nginx:latest
+         docker: Error response from daemon: create  /Users/kolamideidowu/Downloads/HNG Stage 4A/nginx.conf: " /Users/kolamideidowu/Downloads/HNG Stage 4A/nginx.conf" includes invalid characters for a local volume name, only "[a-zA-Z0-9][a-zA-Z0-9_.-]" are allowed. If you intended to pass a host directory, use absolute path
+         
+         Run 'docker run --help' for more information
+
+  Result: 4/5 checks passed.
+
+(.venv) kolamideidowu@Kolamides-MacBook-Pro HNG Stage 4A % python3 << 'EOF'
+content = open('swiftdeploy').read()
+old = '''    def check_nginx_syntax():
+        if not os.path.exists(NGINX_CONF):
+            return False, f"'{NGINX_CONF}' not found — run 'swiftdeploy init' first."
+        abs_conf = os.path.abspath(NGINX_CONF)
+        result = run(
+            f"docker run --rm "
+            f"-v {abs_conf}:/etc/nginx/conf.d/default.conf:ro "
+            f"nginx:latest nginx -t 2>&1",
+            capture=True, check=False
+        )
+        output = (result.stdout + result.stderr).strip()
+        if result.returncode != 0:
+            return False, f"nginx -t output:\\n{output}"
+        return True, "nginx -t passed."'''
+
+new = '''    def check_nginx_syntax():
+        if not os.path.exists(NGINX_CONF):
+            return False, f"'{NGINX_CONF}' not found — run 'swiftdeploy init' first."
+        import shutil
+        tmp_conf = '/tmp/swiftdeploy_check.conf'
+        shutil.copy(os.path.abspath(NGINX_CONF), tmp_conf)
+        result = run(
+            f"docker run --rm "
+            f"-v {tmp_conf}:/etc/nginx/conf.d/default.conf:ro "
+            f"nginx:latest nginx -t 2>&1",
+            capture=True, check=False
+        )
+        os.remove(tmp_conf)
+        output = (result.stdout + result.stderr).strip()
+        if result.returncode != 0:
+            return False, f"nginx -t output:\\n{output}"
+        return True, "nginx -t passed."'''
+
+if old in content:
+    content = content.replace(old, new)
+    open('swiftdeploy', 'w').write(content)
+    print("Patched!")
+else:
+    print("Pattern not found — paste the error here")
+EOF
+Pattern not found — paste the error here
+(.venv) kolamideidowu@Kolamides-MacBook-Pro HNG Stage 4A % python3 << 'EOF'
+content = open('swiftdeploy').read()
+
+old = 'abs_conf = os.path.abspath(NGINX_CONF)\n        result = run(\n            f"docker run --rm "\n            f"-v {abs_conf}:/etc/nginx/conf.d/default.conf:ro "\n            f"nginx:latest nginx -t 2>&1",\n            capture=True, check=False\n        )\n        output = (result.stdout + result.stderr).strip()\n        if result.returncode != 0:\n            return False, f"nginx -t output:\\n{output}"\n        return True, "nginx -t passed."'
+
+new = 'import shutil\n        tmp_conf = "/tmp/swiftdeploy_nginx_check.conf"\n        shutil.copy(os.path.abspath(NGINX_CONF), tmp_conf)\n        result = run(\n            f"docker run --rm "\n            f"-v {tmp_conf}:/etc/nginx/conf.d/default.conf:ro "\n            f"nginx:latest nginx -t 2>&1",\n            capture=True, check=False\n        )\n        os.remove(tmp_conf)\n        output = (result.stdout + result.stderr).strip()\n        if result.returncode != 0:\n            return False, f"nginx -t output:\\n{output}"\n        return True, "nginx -t passed."'
+
+if old in content:
+    open('swiftdeploy', 'w').write(content.replace(old, new))
+    print("Patched!")
+else:
+    # find the relevant line and print it so we can see exactly what's there
+    for i, line in enumerate(content.splitlines()):
+        if 'abs_conf' in line or 'docker run --rm' in line:
+            print(f"Line {i}: {repr(line)}")
+EOF
+Line 234: '        abs_conf = os.path.abspath(NGINX_CONF)'
+Line 236: '            f"docker run --rm "'
+Line 237: '            f\'"-v {abs_conf}:/etc/nginx/conf.d/default.conf:ro" \''
+(.venv) kolamideidowu@Kolamides-MacBook-Pro HNG Stage 4A % python3 << 'EOF'
+content = open('swiftdeploy').read()
+
+old = "        abs_conf = os.path.abspath(NGINX_CONF)\n        result = run(\n            f\"docker run --rm \"\n            f'\"-v {abs_conf}:/etc/nginx/conf.d/default.conf:ro\" '\n            f\"nginx:latest nginx -t 2>&1\","
+
+new = "        import shutil\n        tmp_conf = \"/tmp/swiftdeploy_nginx.conf\"\n        shutil.copy(os.path.abspath(NGINX_CONF), tmp_conf)\n        result = run(\n            f\"docker run --rm \"\n            f\"-v {tmp_conf}:/etc/nginx/conf.d/default.conf:ro \"\n            f\"nginx:latest nginx -t 2>&1\","
+
+if old in content:
+    open('swiftdeploy', 'w').write(content.replace(old, new))
+    print("Patched!")
+else:
+    print("Still not matching — trying line 234-237 raw:")
+    lines = content.splitlines()
+    for i in range(230, 245):
+        print(f"{i}: {repr(lines[i])}")
+EOF
+Patched!
+(.venv) kolamideidowu@Kolamides-MacBook-Pro HNG Stage 4A % python3 swiftdeploy validate
+[ERROR] PyYAML not installed. Run: pip install pyyaml
+(.venv) kolamideidowu@Kolamides-MacBook-Pro HNG Stage 4A % pip install pyyaml
+zsh: command not found: pip
+(.venv) kolamideidowu@Kolamides-MacBook-Pro HNG Stage 4A % source .venv/bin/activate
+(.venv) kolamideidowu@Kolamides-MacBook-Pro HNG Stage 4A % python3 swiftdeploy validate
+[ERROR] PyYAML not installed. Run: pip install pyyaml
+(.venv) kolamideidowu@Kolamides-MacBook-Pro HNG Stage 4A % python3 -m pip install pyyaml
+error: externally-managed-environment
+
+× This environment is externally managed
+╰─> To install Python packages system-wide, try brew install
+    xyz, where xyz is the package you are trying to
+    install.
+    
+    If you wish to install a Python library that isn't in Homebrew,
+    use a virtual environment:
+    
+    python3 -m venv path/to/venv
+    source path/to/venv/bin/activate
+    python3 -m pip install xyz
+    
+    If you wish to install a Python application that isn't in Homebrew,
+    it may be easiest to use 'pipx install xyz', which will manage a
+    virtual environment for you. You can install pipx with
+    
+    brew install pipx
+    
+    You may restore the old behavior of pip by passing
+    the '--break-system-packages' flag to pip, or by adding
+    'break-system-packages = true' to your pip.conf file. The latter
+    will permanently disable this error.
+    
+    If you disable this error, we STRONGLY recommend that you additionally
+    pass the '--user' flag to pip, or set 'user = true' in your pip.conf
+    file. Failure to do this can result in a broken Homebrew installation.
+    
+    Read more about this behavior here: <https://peps.python.org/pep-0668/>
+
+note: If you believe this is a mistake, please contact your Python installation or OS distribution provider. You can override this, at the risk of breaking your Python installation or OS, by passing --break-system-packages.
+hint: See PEP 668 for the detailed specification.
+(.venv) kolamideidowu@Kolamides-MacBook-Pro HNG Stage 4A % python3 swiftdeploy validate
+[ERROR] PyYAML not installed. Run: pip install pyyaml
+(.venv) kolamideidowu@Kolamides-MacBook-Pro HNG Stage 4A % deactivate
+rm -rf .venv
+python3 -m venv .venv
+source .venv/bin/activate
+pip install pyyaml
+python3 -c "import yaml; print('yaml OK')"
+Collecting pyyaml
+  Using cached pyyaml-6.0.3-cp314-cp314-macosx_11_0_arm64.whl.metadata (2.4 kB)
+Using cached pyyaml-6.0.3-cp314-cp314-macosx_11_0_arm64.whl (173 kB)
+Installing collected packages: pyyaml
+Successfully installed pyyaml-6.0.3
+
+[notice] A new release of pip is available: 25.2 -> 26.1.1
+[notice] To update, run: pip install --upgrade pip
+yaml OK
+(.venv) kolamideidowu@Kolamides-MacBook-Pro HNG Stage 4A % python3 swiftdeploy validate
+
+▶  swiftdeploy validate — 5 pre-flight checks
+  ✔  [PASS]  manifest.yaml exists and is valid YAML
+         Parsed OK (4 top-level keys).
+  ✔  [PASS]  All required fields are present and non-empty
+         services.image = swift-deploy-1-node:latest
+         services.port = 3000
+         nginx.image = nginx:latest
+         nginx.port = 8080
+         network.name = swiftdeploy-net
+         network.driver_type = bridge
+  ✔  [PASS]  Docker image referenced in manifest exists locally
+         Image 'swift-deploy-1-node:latest' present locally.
+  ✔  [PASS]  Nginx port is not already bound on the host
+         Port 8080 is free.
+  ✘  [FAIL]  Generated nginx.conf is syntactically valid
+         nginx -t output:
+         /docker-entrypoint.sh: /docker-entrypoint.d/ is not empty, will attempt to perform configuration
+         /docker-entrypoint.sh: Looking for shell scripts in /docker-entrypoint.d/
+         /docker-entrypoint.sh: Launching /docker-entrypoint.d/10-listen-on-ipv6-by-default.sh
+         10-listen-on-ipv6-by-default.sh: info: can not modify /etc/nginx/conf.d/default.conf (read-only file system?)
+         /docker-entrypoint.sh: Sourcing /docker-entrypoint.d/15-local-resolvers.envsh
+         /docker-entrypoint.sh: Launching /docker-entrypoint.d/20-envsubst-on-templates.sh
+         /docker-entrypoint.sh: Launching /docker-entrypoint.d/30-tune-worker-processes.sh
+         /docker-entrypoint.sh: Configuration complete; ready for start up
+         2026/05/05 17:59:55 [emerg] 1#1: host not found in upstream "service:3000" in /etc/nginx/conf.d/default.conf:4
+         nginx: [emerg] host not found in upstream "service:3000" in /etc/nginx/conf.d/default.conf:4
+         nginx: configuration file /etc/nginx/nginx.conf test failed
+
+  Result: 4/5 checks passed.
+
+(.venv) kolamideidowu@Kolamides-MacBook-Pro HNG Stage 4A % python3 << 'EOF'
+content = open('swiftdeploy').read()
+
+old = '        import shutil\n        tmp_conf = "/tmp/swiftdeploy_nginx.conf"\n        shutil.copy(os.path.abspath(NGINX_CONF), tmp_conf)'
+
+new = '        import shutil\n        tmp_conf = "/tmp/swiftdeploy_nginx.conf"\n        shutil.copy(os.path.abspath(NGINX_CONF), tmp_conf)\n        # Replace upstream host with dummy IP so nginx -t can resolve it outside Docker network\n        tmp_content = open(tmp_conf).read().replace("service:", "127.0.0.1:")\n        open(tmp_conf, "w").write(tmp_content)'
+
+if old in content:
+    open('swiftdeploy', 'w').write(content.replace(old, new))
+    print("Patched!")
+else:
+    print("Not found — checking current state:")
+    for i, line in enumerate(content.splitlines()):
+        if 'tmp_conf' in line or 'shutil' in line:
+            print(f"  Line {i}: {repr(line)}")
+EOF
+Patched!
+(.venv) kolamideidowu@Kolamides-MacBook-Pro HNG Stage 4A % python3 swiftdeploy validate
+
+▶  swiftdeploy validate — 5 pre-flight checks
+  ✔  [PASS]  manifest.yaml exists and is valid YAML
+         Parsed OK (4 top-level keys).
+  ✔  [PASS]  All required fields are present and non-empty
+         services.image = swift-deploy-1-node:latest
+         services.port = 3000
+         nginx.image = nginx:latest
+         nginx.port = 8080
+         network.name = swiftdeploy-net
+         network.driver_type = bridge
+  ✔  [PASS]  Docker image referenced in manifest exists locally
+         Image 'swift-deploy-1-node:latest' present locally.
+  ✔  [PASS]  Nginx port is not already bound on the host
+         Port 8080 is free.
+  ✔  [PASS]  Generated nginx.conf is syntactically valid
+         nginx -t passed.
+
+  Result: 5/5 checks passed.
+
+(.venv) kolamideidowu@Kolamides-MacBook-Pro HNG Stage 4A % python3 swiftdeploy deploy
+
+▶  swiftdeploy deploy
+
+▶  swiftdeploy init
+  ✔  Generated  nginx.conf  (nginx port 8080 → service port 3000)
+  ✔  Generated  docker-compose.yml  (mode=stable, version=1.0.0)
+
+  Init complete. Edit manifest.yaml and re-run to regenerate.
+
+
+
+▶  Bringing up stack …
+[+] up 4/4
+ ✔ Network hng_stage_4a_swiftdeploy-net Created                                                                                                                                                                  0.0s
+ ✔ Volume hng_stage_4a_swiftdeploy-logs Created                                                                                                                                                                  0.0s
+ ✘ Container swiftdeploy-service        Error dependency service failed to start                                                                                                                                 1.7s
+ ✔ Container swiftdeploy-nginx          Created                                                                                                                                                                  0.0s
+dependency failed to start: container swiftdeploy-service is unhealthy
+
+What's next:
+    Debug this Compose error with Gordon → docker ai "help me fix this compose error"
+
+  Waiting for service at http://localhost:8080/healthz (60 s timeout) …
+
+..............................
+  ✘  Health check timed out after 60 seconds. Check: docker compose logs
+(.venv) kolamideidowu@Kolamides-MacBook-Pro HNG Stage 4A % docker logs swiftdeploy-service
+
+Error: Error: '/logs/gunicorn-error.log' isn't writable [PermissionError(13, 'Permission denied')]
+
+
+Error: Error: '/logs/gunicorn-error.log' isn't writable [PermissionError(13, 'Permission denied')]
+
+
+Error: Error: '/logs/gunicorn-error.log' isn't writable [PermissionError(13, 'Permission denied')]
+
+
+Error: Error: '/logs/gunicorn-error.log' isn't writable [PermissionError(13, 'Permission denied')]
+
+
+Error: Error: '/logs/gunicorn-error.log' isn't writable [PermissionError(13, 'Permission denied')]
+
+
+Error: Error: '/logs/gunicorn-error.log' isn't writable [PermissionError(13, 'Permission denied')]
+
+
+Error: Error: '/logs/gunicorn-error.log' isn't writable [PermissionError(13, 'Permission denied')]
+
+
+Error: Error: '/logs/gunicorn-error.log' isn't writable [PermissionError(13, 'Permission denied')]
+
+
+Error: Error: '/logs/gunicorn-error.log' isn't writable [PermissionError(13, 'Permission denied')]
+
+
+Error: Error: '/logs/gunicorn-error.log' isn't writable [PermissionError(13, 'Permission denied')]
+
+
+Error: Error: '/logs/gunicorn-error.log' isn't writable [PermissionError(13, 'Permission denied')]
+
+(.venv) kolamideidowu@Kolamides-MacBook-Pro HNG Stage 4A % # Fix the Dockerfile CMD to log to stdout/stderr instead of files
+python3 << 'EOF'
+content = open('Dockerfile').read()
+old = '      --access-logfile /logs/gunicorn-access.log \\\n      --error-logfile  /logs/gunicorn-error.log \\\n      main:app"'
+new = '      --access-logfile - \\\n      --error-logfile  - \\\n      main:app"'
+if old in content:
+    open('Dockerfile', 'w').write(content.replace(old, new))
+    print("Patched!")
+else:
+    print("Not found, checking CMD line:")
+    for i, line in enumerate(content.splitlines()):
+        if 'logfile' in line or 'gunicorn' in line:
+            print(f"  {i}: {repr(line)}")
+EOF
+zsh: command not found: #
+Patched!
+(.venv) kolamideidowu@Kolamides-MacBook-Pro HNG Stage 4A % python3 swiftdeploy teardown --clean
+
+▶  swiftdeploy teardown
+[+] down 4/4
+ ✔ Container swiftdeploy-nginx          Removed                                                                                                                                                                  0.0s
+ ✔ Container swiftdeploy-service        Removed                                                                                                                                                                  0.0s
+ ✔ Network hng_stage_4a_swiftdeploy-net Removed                                                                                                                                                                  0.2s
+ ✔ Volume hng_stage_4a_swiftdeploy-logs Removed                                                                                                                                                                  0.0s
+  ✔  Containers, networks, and named volumes removed.
+  ✔  Deleted generated config: nginx.conf
+  ✔  Deleted generated config: docker-compose.yml
+
+  Clean teardown complete.
+
+(.venv) kolamideidowu@Kolamides-MacBook-Pro HNG Stage 4A % docker build -t swift-deploy-1-node:latest .
+[+] Building 1.0s (16/16) FINISHED                                                                                                                                                              docker:desktop-linux
+ => [internal] load build definition from Dockerfile                                                                                                                                                            0.0s
+ => => transferring dockerfile: 1.66kB                                                                                                                                                                          0.0s
+ => [internal] load metadata for docker.io/library/python:3.12-alpine                                                                                                                                           0.9s
+ => [auth] library/python:pull token for registry-1.docker.io                                                                                                                                                   0.0s
+ => [internal] load .dockerignore                                                                                                                                                                               0.0s
+ => => transferring context: 2B                                                                                                                                                                                 0.0s
+ => [internal] load build context                                                                                                                                                                               0.0s
+ => => transferring context: 4.50kB                                                                                                                                                                             0.0s
+ => [builder 1/5] FROM docker.io/library/python:3.12-alpine@sha256:236173eb74001afe2f60862de935b74fcbd00adfca247b2c27051a70a6a39a2d                                                                             0.0s
+ => => resolve docker.io/library/python:3.12-alpine@sha256:236173eb74001afe2f60862de935b74fcbd00adfca247b2c27051a70a6a39a2d                                                                                     0.0s
+ => CACHED [runtime 2/6] RUN addgroup -g 1001 -S appgroup  && adduser  -u 1001 -S appuser  -G appgroup                                                                                                          0.0s
+ => CACHED [builder 2/5] WORKDIR /build                                                                                                                                                                         0.0s
+ => CACHED [builder 3/5] RUN apk add --no-cache gcc musl-dev libffi-dev                                                                                                                                         0.0s
+ => CACHED [builder 4/5] COPY app/requirements.txt .                                                                                                                                                            0.0s
+ => CACHED [builder 5/5] RUN pip install --no-cache-dir --prefix=/install -r requirements.txt                                                                                                                   0.0s
+ => CACHED [runtime 3/6] COPY --from=builder /install /usr/local                                                                                                                                                0.0s
+ => CACHED [runtime 4/6] WORKDIR /app                                                                                                                                                                           0.0s
+ => CACHED [runtime 5/6] COPY app/ .                                                                                                                                                                            0.0s
+ => CACHED [runtime 6/6] RUN mkdir -p /logs && chown appuser:appgroup /logs                                                                                                                                     0.0s
+ => exporting to image                                                                                                                                                                                          0.0s
+ => => exporting layers                                                                                                                                                                                         0.0s
+ => => exporting manifest sha256:7119b5a21fe097909294190c1b02920e6f70aa3916407665aab4ccc1c494e728                                                                                                               0.0s
+ => => exporting config sha256:4c2486e619d4f7fb737feed0cbfab321a190a4e89642b04cfd412434c7115872                                                                                                                 0.0s
+ => => exporting attestation manifest sha256:7e6bd12a4b5b52b7b4691bec78bdc58ad568bafa03c2412effb963eddfcd05d1                                                                                                   0.0s
+ => => exporting manifest list sha256:4d91bb35d068080d1da2b0fef96aa5a70e53540da756ea217774c533b875fc5d                                                                                                          0.0s
+ => => naming to docker.io/library/swift-deploy-1-node:latest                                                                                                                                                   0.0s
+ => => unpacking to docker.io/library/swift-deploy-1-node:latest                                                                                                                                                0.0s
+
+ 1 warning found (use docker --debug to expand):
+ - JSONArgsRecommended: JSON arguments recommended for CMD to prevent unintended behavior related to OS signals (line 46)
+(.venv) kolamideidowu@Kolamides-MacBook-Pro HNG Stage 4A % python3 swiftdeploy deploy
+
+▶  swiftdeploy deploy
+
+▶  swiftdeploy init
+  ✔  Generated  nginx.conf  (nginx port 8080 → service port 3000)
+  ✔  Generated  docker-compose.yml  (mode=stable, version=1.0.0)
+
+  Init complete. Edit manifest.yaml and re-run to regenerate.
+
+
+
+▶  Bringing up stack …
+[+] up 4/4
+ ✔ Network hng_stage_4a_swiftdeploy-net Created                                                                                                                                                                  0.0s
+ ✔ Volume hng_stage_4a_swiftdeploy-logs Created                                                                                                                                                                  0.0s
+ ✘ Container swiftdeploy-service        Error dependency service failed to start                                                                                                                                55.6s
+ ✔ Container swiftdeploy-nginx          Created                                                                                                                                                                  0.0s
+dependency failed to start: container swiftdeploy-service is unhealthy
+
+What's next:
+    Debug this Compose error with Gordon → docker ai "help me fix this compose error"
+
+  Waiting for service at http://localhost:8080/healthz (60 s timeout) …
+
+..............................
+  ✘  Health check timed out after 60 seconds. Check: docker compose logs
+(.venv) kolamideidowu@Kolamides-MacBook-Pro HNG Stage 4A % docker logs swiftdeploy-service
+[2026-05-05 18:06:42 +0000] [1] [INFO] Starting gunicorn 26.0.0
+[2026-05-05 18:06:42 +0000] [1] [INFO] Listening at: http://0.0.0.0:3000 (1)
+[2026-05-05 18:06:42 +0000] [1] [INFO] Using worker: gthread
+[2026-05-05 18:06:42 +0000] [7] [INFO] Booting worker with pid: 7
+[2026-05-05 18:06:42 +0000] [8] [INFO] Booting worker with pid: 8
+[2026-05-05 18:06:42 +0000] [1] [INFO] Control socket listening at /home/appuser/.gunicorn/gunicorn.ctl
+(.venv) kolamideidowu@Kolamides-MacBook-Pro HNG Stage 4A % docker inspect swiftdeploy-service --format='{{json .State.Health}}' | python3 -m json.tool
+{
+    "Status": "unhealthy",
+    "FailingStreak": 32,
+    "Log": [
+        {
+            "Start": "2026-05-05T18:11:29.056334632Z",
+            "End": "2026-05-05T18:11:29.10721059Z",
+            "ExitCode": 1,
+            "Output": "wget: can't connect to remote host: Connection refused\n"
+        },
+        {
+            "Start": "2026-05-05T18:11:39.109827554Z",
+            "End": "2026-05-05T18:11:39.158498512Z",
+            "ExitCode": 1,
+            "Output": "wget: can't connect to remote host: Connection refused\n"
+        },
+        {
+            "Start": "2026-05-05T18:11:49.164784711Z",
+            "End": "2026-05-05T18:11:49.223993044Z",
+            "ExitCode": 1,
+            "Output": "wget: can't connect to remote host: Connection refused\n"
+        },
+        {
+            "Start": "2026-05-05T18:11:59.228901216Z",
+            "End": "2026-05-05T18:11:59.282173049Z",
+            "ExitCode": 1,
+            "Output": "wget: can't connect to remote host: Connection refused\n"
+        },
+        {
+            "Start": "2026-05-05T18:12:09.287669345Z",
+            "End": "2026-05-05T18:12:09.333226304Z",
+            "ExitCode": 1,
+            "Output": "wget: can't connect to remote host: Connection refused\n"
+        }
+    ]
+}
+(.venv) kolamideidowu@Kolamides-MacBook-Pro HNG Stage 4A % python3 << 'EOF'
+# Fix docker-compose template healthcheck
+content = open('templates/docker-compose.yml.tmpl').read()
+old = '      test: ["CMD-SHELL", "wget -qO- http://localhost:{{ service_port }}/healthz || exit 1"]'
+new = '      test: ["CMD-SHELL", "python3 -c \\"import urllib.request; urllib.request.urlopen(\'http://127.0.0.1:{{ service_port }}/healthz\')\\""  ]'
+if old in content:
+    open('templates/docker-compose.yml.tmpl', 'w').write(content.replace(old, new))
+    print("Template patched!")
+else:
+    print("Not found")
+
+# Fix Dockerfile healthcheck too
+content2 = open('Dockerfile').read()
+old2 = 'CMD wget -qO- http://localhost:${APP_PORT}/healthz || exit 1'
+new2 = 'CMD python3 -c "import urllib.request; urllib.request.urlopen(\'http://127.0.0.1:\'+__import__(\'os\').environ.get(\'APP_PORT\',\'3000\')+\'/healthz\')"'
+if old2 in content2:
+    open('Dockerfile', 'w').write(content2.replace(old2, new2))
+    print("Dockerfile patched!")
+else:
+    print("Dockerfile not found")
+EOF
+Template patched!
+Dockerfile patched!
+(.venv) kolamideidowu@Kolamides-MacBook-Pro HNG Stage 4A % python3 swiftdeploy teardown --clean
+docker build -t swift-deploy-1-node:latest .
+python3 swiftdeploy deploy
+
+▶  swiftdeploy teardown
+[+] down 4/4
+ ✔ Container swiftdeploy-nginx          Removed                                                                                                                                                                  0.0s
+ ✔ Container swiftdeploy-service        Removed                                                                                                                                                                  0.3s
+ ✔ Network hng_stage_4a_swiftdeploy-net Removed                                                                                                                                                                  0.2s
+ ✔ Volume hng_stage_4a_swiftdeploy-logs Removed                                                                                                                                                                  0.0s
+  ✔  Containers, networks, and named volumes removed.
+  ✔  Deleted generated config: nginx.conf
+  ✔  Deleted generated config: docker-compose.yml
+
+  Clean teardown complete.
+
+[+] Building 0.9s (16/16) FINISHED                                                                                                                                                              docker:desktop-linux
+ => [internal] load build definition from Dockerfile                                                                                                                                                            0.0s
+ => => transferring dockerfile: 1.74kB                                                                                                                                                                          0.0s
+ => [internal] load metadata for docker.io/library/python:3.12-alpine                                                                                                                                           0.8s
+ => [auth] library/python:pull token for registry-1.docker.io                                                                                                                                                   0.0s
+ => [internal] load .dockerignore                                                                                                                                                                               0.0s
+ => => transferring context: 2B                                                                                                                                                                                 0.0s
+ => [internal] load build context                                                                                                                                                                               0.0s
+ => => transferring context: 95B                                                                                                                                                                                0.0s
+ => [builder 1/5] FROM docker.io/library/python:3.12-alpine@sha256:236173eb74001afe2f60862de935b74fcbd00adfca247b2c27051a70a6a39a2d                                                                             0.0s
+ => => resolve docker.io/library/python:3.12-alpine@sha256:236173eb74001afe2f60862de935b74fcbd00adfca247b2c27051a70a6a39a2d                                                                                     0.0s
+ => CACHED [runtime 2/6] RUN addgroup -g 1001 -S appgroup  && adduser  -u 1001 -S appuser  -G appgroup                                                                                                          0.0s
+ => CACHED [builder 2/5] WORKDIR /build                                                                                                                                                                         0.0s
+ => CACHED [builder 3/5] RUN apk add --no-cache gcc musl-dev libffi-dev                                                                                                                                         0.0s
+ => CACHED [builder 4/5] COPY app/requirements.txt .                                                                                                                                                            0.0s
+ => CACHED [builder 5/5] RUN pip install --no-cache-dir --prefix=/install -r requirements.txt                                                                                                                   0.0s
+ => CACHED [runtime 3/6] COPY --from=builder /install /usr/local                                                                                                                                                0.0s
+ => CACHED [runtime 4/6] WORKDIR /app                                                                                                                                                                           0.0s
+ => CACHED [runtime 5/6] COPY app/ .                                                                                                                                                                            0.0s
+ => CACHED [runtime 6/6] RUN mkdir -p /logs && chown appuser:appgroup /logs                                                                                                                                     0.0s
+ => exporting to image                                                                                                                                                                                          0.0s
+ => => exporting layers                                                                                                                                                                                         0.0s
+ => => exporting manifest sha256:bbf87585cdba689c43fdee155e4ad03aa6cfd326b51f2a25eb4ff4ed856498b0                                                                                                               0.0s
+ => => exporting config sha256:136408ff461f828fa332bb4465b59fe2b6f711b725890fcaf78d7a0eb25aec46                                                                                                                 0.0s
+ => => exporting attestation manifest sha256:e2e6d22c24884ee48cf3a0091edab59ccda630124b08fb3b1bb57c12ec9b5a36                                                                                                   0.0s
+ => => exporting manifest list sha256:294d254316f6e567bc55d22308eb09a38b976b4037c423aa3ce9b5a78d0630cb                                                                                                          0.0s
+ => => naming to docker.io/library/swift-deploy-1-node:latest                                                                                                                                                   0.0s
+ => => unpacking to docker.io/library/swift-deploy-1-node:latest                                                                                                                                                0.0s
+
+ 1 warning found (use docker --debug to expand):
+ - JSONArgsRecommended: JSON arguments recommended for CMD to prevent unintended behavior related to OS signals (line 46)
+
+▶  swiftdeploy deploy
+
+▶  swiftdeploy init
+  ✔  Generated  nginx.conf  (nginx port 8080 → service port 3000)
+  ✔  Generated  docker-compose.yml  (mode=stable, version=1.0.0)
+
+  Init complete. Edit manifest.yaml and re-run to regenerate.
+
+
+
+▶  Bringing up stack …
+[+] up 4/4
+ ✔ Network hng_stage_4a_swiftdeploy-net Created                                                                                                                                                                  0.0s
+ ✔ Volume hng_stage_4a_swiftdeploy-logs Created                                                                                                                                                                  0.0s
+ ✔ Container swiftdeploy-service        Healthy                                                                                                                                                                  5.6s
+ ✔ Container swiftdeploy-nginx          Started                                                                                                                                                                  8.0s
+
+  Waiting for service at http://localhost:8080/healthz (60 s timeout) …
+
+  ✔  Health check passed!  uptime=7.66s
+
+  Stack deployed successfully.
+
+(.venv) kolamideidowu@Kolamides-MacBook-Pro HNG Stage 4A % python3 swiftdeploy promote canary
+
+▶  swiftdeploy promote → canary
+  ✔  manifest.yaml updated:  mode = stable → canary
+  ✔  docker-compose.yml regenerated with new MODE env var.
+
+
+▶  Restarting service container …
+[+] up 1/1
+ ✔ Container swiftdeploy-service Started                                                                                                                                                                         0.4s
+
+  Verifying mode switch at http://localhost:8080/healthz …
+
+  ✔  Mode confirmed: canary  (X-Mode: canary ✔)  uptime=2.85s
+
+  Promotion to 'canary' complete.
+
+(.venv) kolamideidowu@Kolamides-MacBook-Pro HNG Stage 4A % curl -si http://localhost:8080/healthz
+HTTP/1.1 200 OK
+Server: nginx/1.29.8
+Date: Tue, 05 May 2026 18:18:49 GMT
+Content-Type: application/json
+Content-Length: 31
+Connection: keep-alive
+X-Mode: canary
+X-Deployed-By: swiftdeploy
+
+{"status":"ok","uptime":65.73}
+(.venv) kolamideidowu@Kolamides-MacBook-Pro HNG Stage 4A % cat nginx.conf
+cat docker-compose.yml
+# ── SwiftDeploy — generated by `swiftdeploy init` — DO NOT EDIT BY HAND ──
+
+upstream swiftdeploy_backend {
+    server service:3000;
+    keepalive 32;
+}
+
+# Access log: ISO8601 | status | request_time | upstream_addr | request
+log_format swiftdeploy_fmt '$time_iso8601 | $status | ${request_time}s | $upstream_addr | $request';
+
+server {
+    listen 8080;
+    server_name _;
+
+    access_log /var/log/nginx/access.log swiftdeploy_fmt;
+    error_log  /var/log/nginx/error.log  warn;
+
+    # ── Timeouts ──────────────────────────────────────────────────────────
+    proxy_connect_timeout 30s;
+    proxy_send_timeout    30s;
+    proxy_read_timeout    30s;
+
+    # ── JSON error pages for 502 / 503 / 504 ──────────────────────────────
+    error_page 502 @error_502;
+    error_page 503 @error_503;
+    error_page 504 @error_504;
+
+    location @error_502 {
+        default_type application/json;
+        add_header   Content-Type  "application/json" always;
+        add_header   X-Deployed-By swiftdeploy        always;
+        return 502 '{"error":"Bad Gateway","code":502,"service":"service","contact":"admin@swiftdeploy.local"}';
+    }
+
+    location @error_503 {
+        default_type application/json;
+        add_header   Content-Type  "application/json" always;
+        add_header   X-Deployed-By swiftdeploy        always;
+        return 503 '{"error":"Service Unavailable","code":503,"service":"service","contact":"admin@swiftdeploy.local"}';
+    }
+
+    location @error_504 {
+        default_type application/json;
+        add_header   Content-Type  "application/json" always;
+        add_header   X-Deployed-By swiftdeploy        always;
+        return 504 '{"error":"Gateway Timeout","code":504,"service":"service","contact":"admin@swiftdeploy.local"}';
+    }
+
+    # ── Proxy ─────────────────────────────────────────────────────────────
+    location / {
+        proxy_pass         http://swiftdeploy_backend;
+        proxy_http_version 1.1;
+
+        proxy_set_header   Host              $host;
+        proxy_set_header   X-Real-IP         $remote_addr;
+        proxy_set_header   X-Forwarded-For   $proxy_add_x_forwarded_for;
+        proxy_set_header   X-Forwarded-Proto $scheme;
+        proxy_set_header   Connection        "";
+
+        # Inject deployment identity header
+        add_header         X-Deployed-By swiftdeploy always;
+
+        # Forward X-Mode header set by upstream (canary signal)
+        proxy_pass_header  X-Mode;
+
+        # Hide upstream version leakage
+        proxy_hide_header  X-Powered-By;
+        proxy_hide_header  Server;
+    }
+}
+# ── SwiftDeploy — generated by `swiftdeploy init` — DO NOT EDIT BY HAND ──
+
+services:
+
+  # ── Application service ─────────────────────────────────────────────────
+  service:
+    image: swift-deploy-1-node:latest
+    container_name: swiftdeploy-service
+    restart: unless-stopped
+
+    environment:
+      - MODE=canary
+      - APP_VERSION=1.0.0
+      - APP_PORT=3000
+
+    networks:
+      - swiftdeploy-net
+
+    volumes:
+      - swiftdeploy-logs:/logs
+
+    # Healthcheck against the internal port (never exposed to host)
+    healthcheck:
+      test: ["CMD-SHELL", "python3 -c \"import urllib.request; urllib.request.urlopen('http://127.0.0.1:3000/healthz')\""  ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+
+    # Security hardening: non-root, drop all Linux capabilities
+    user: "1001:1001"
+    cap_drop:
+      - ALL
+    cap_add: []
+    security_opt:
+      - no-new-privileges:true
+    read_only: false
+
+    # NOTE: service port is NOT mapped to the host — all traffic via nginx
+    expose:
+      - "3000"
+
+  # ── Nginx reverse proxy ──────────────────────────────────────────────────
+  nginx:
+    image: nginx:latest
+    container_name: swiftdeploy-nginx
+    restart: unless-stopped
+
+    ports:
+      - "8080:8080"
+
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - swiftdeploy-logs:/var/log/nginx
+
+    networks:
+      - swiftdeploy-net
+
+    depends_on:
+      service:
+        condition: service_healthy
+
+# ── Network ──────────────────────────────────────────────────────────────────
+networks:
+  swiftdeploy-net:
+    driver: bridge
+
+# ── Volumes ───────────────────────────────────────────────────────────────────
+volumes:
+  swiftdeploy-logs:
+    driver: local
+(.venv) kolamideidowu@Kolamides-MacBook-Pro HNG Stage 4A % curl http://localhost:8080/
+curl http://localhost:8080/healthz
+curl http://localhost:8080/healthz
+docker exec swiftdeploy-nginx cat /var/log/nginx/access.log
+{"message":"Welcome to SwiftDeploy API \u2014 running in canary mode","mode":"canary","timestamp":"2026-05-05T18:20:20Z","version":"1.0.0"}
+{"status":"ok","uptime":156.59}
+{"status":"ok","uptime":156.64}
+
